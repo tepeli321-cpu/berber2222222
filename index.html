@@ -1,0 +1,958 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Gentlemen's Barber — Randevu</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,700&family=Work+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg: #14100c;
+    --bg-elevated: #1e1811;
+    --bg-card: #241d15;
+    --border: #3a2f21;
+    --border-soft: #2a2318;
+    --brass: #c9a15a;
+    --brass-dark: #8f6f34;
+    --brass-bright: #e0bd7d;
+    --text: #f1e9dc;
+    --text-muted: #a99d8c;
+    --danger: #b3543f;
+    --danger-bright: #d4715c;
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    background: var(--bg);
+    background-image:
+      radial-gradient(ellipse 800px 500px at 15% -10%, rgba(201,161,90,0.08), transparent),
+      radial-gradient(ellipse 700px 500px at 90% 10%, rgba(201,161,90,0.05), transparent);
+    color: var(--text);
+    font-family: 'Work Sans', sans-serif;
+    line-height: 1.55;
+    min-height: 100vh;
+  }
+  h1,h2,h3,.display{
+    font-family: 'Fraunces', serif;
+    font-weight: 600;
+    letter-spacing: 0.2px;
+    margin: 0;
+  }
+  .wrap{max-width: 720px; margin: 0 auto; padding: 0 24px;}
+
+  /* ---------- Header ---------- */
+  header{
+    padding: 40px 24px 28px;
+    text-align: center;
+    border-bottom: 1px solid var(--border-soft);
+  }
+  .pole{ display:inline-block; margin-bottom: 14px; }
+  .shop-name{
+    font-size: clamp(28px, 5vw, 40px);
+    color: var(--brass-bright);
+    letter-spacing: 1px;
+  }
+  .welcome-overline{
+    color: var(--brass);
+    font-size: 12px;
+    letter-spacing: 3.5px;
+    margin-bottom: 14px;
+    font-weight: 600;
+  }
+  .ornament{
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    gap: 10px;
+    margin: 16px 0 6px;
+    color: var(--brass-dark);
+  }
+  .ornament::before, .ornament::after{
+    content:'';
+    height: 1px;
+    width: 46px;
+    background: linear-gradient(90deg, transparent, var(--border));
+  }
+  .ornament::after{ background: linear-gradient(90deg, var(--border), transparent); }
+  .ornament svg{ flex-shrink:0; }
+  .tagline{
+    color: var(--text-muted);
+    font-size: 14px;
+    margin-top: 8px;
+    letter-spacing: 0.5px;
+  }
+
+  /* ---------- Hero ---------- */
+  .hero{
+    padding: 72px 24px 60px;
+    text-align: center;
+    position: relative;
+    background:
+      linear-gradient(180deg, rgba(20,16,12,0.88), rgba(20,16,12,0.94) 55%, var(--bg) 100%),
+      url('https://images.unsplash.com/photo-1517869129960-b9b74bfcdecb?auto=format&fit=crop&w=1600&q=60') center 30% / cover no-repeat;
+  }
+  .hero-welcome{
+    color: var(--brass);
+    font-family: 'Fraunces', serif;
+    font-style: italic;
+    font-size: clamp(17px, 2.4vw, 20px);
+    margin-bottom: 10px;
+    letter-spacing: 0.3px;
+  }
+  .hero h1{
+    font-size: clamp(30px, 6vw, 46px);
+    line-height: 1.15;
+    color: var(--text);
+  }
+  .hero h1 em{
+    font-style: italic;
+    color: var(--brass);
+  }
+  .hero p{
+    color: var(--text-muted);
+    max-width: 480px;
+    margin: 18px auto 28px;
+    font-size: 15.5px;
+  }
+  .btn-primary{
+    background: linear-gradient(180deg, var(--brass-bright), var(--brass));
+    color: #1a1409;
+    border: none;
+    padding: 14px 32px;
+    font-family: 'Work Sans', sans-serif;
+    font-weight: 600;
+    font-size: 15px;
+    border-radius: 3px;
+    cursor: pointer;
+    letter-spacing: 0.3px;
+    transition: transform .15s ease, box-shadow .15s ease;
+    box-shadow: 0 6px 18px rgba(201,161,90,0.18);
+  }
+  .btn-primary:hover{ transform: translateY(-1px); box-shadow: 0 8px 22px rgba(201,161,90,0.28); }
+  .btn-primary:active{ transform: translateY(0); }
+
+  /* ---------- Section shell ---------- */
+  section.block{
+    padding: 52px 24px;
+    border-top: 1px solid var(--border-soft);
+  }
+  .block-label{
+    text-align:center;
+    color: var(--brass);
+    font-size: 13px;
+    letter-spacing: 2px;
+    margin-bottom: 8px;
+  }
+  .block h2{
+    text-align:center;
+    font-size: clamp(24px, 4vw, 30px);
+    margin-bottom: 36px;
+  }
+
+  /* ---------- About ---------- */
+  .about-grid{
+    display:grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 40px;
+    align-items:center;
+  }
+  .about-photo{
+    width: 100%;
+    aspect-ratio: 4/5;
+    object-fit: cover;
+    border-radius: 6px;
+    border: 1px solid var(--border);
+    filter: grayscale(0.25) contrast(1.05) brightness(0.92);
+  }
+  .about-text p{
+    color: var(--text-muted);
+    font-size: 15px;
+    margin: 0 0 16px;
+  }
+  .about-text .lead{
+    color: var(--text);
+    font-family:'Fraunces', serif;
+    font-size: 19px;
+    font-style: italic;
+    margin-bottom: 18px;
+  }
+  @media (max-width: 680px){
+    .about-grid{ grid-template-columns: 1fr; }
+    .about-photo{ aspect-ratio: 16/10; order: -1; }
+  }
+
+  /* ---------- Scroll reveal ---------- */
+  .reveal{
+    opacity: 0;
+    transform: translateY(18px);
+    transition: opacity .7s ease, transform .7s ease;
+  }
+  .reveal.in-view{
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  /* ---------- Services (price list style) ---------- */
+  .service-list{ display:flex; flex-direction:column; gap: 18px; }
+  .service-row{
+    display:flex;
+    align-items: baseline;
+    gap: 10px;
+  }
+  .service-name{ font-size: 16px; white-space: nowrap; }
+  .service-dots{
+    flex:1;
+    border-bottom: 1px dotted var(--border);
+    margin-bottom: 4px;
+  }
+  .service-price{
+    font-family: 'Fraunces', serif;
+    color: var(--brass-bright);
+    font-size: 17px;
+    white-space: nowrap;
+  }
+
+  /* ---------- Form ---------- */
+  .card{
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 32px;
+  }
+  .field{ margin-bottom: 18px; }
+  .field label{
+    display:block;
+    font-size: 13px;
+    color: var(--text-muted);
+    margin-bottom: 7px;
+    letter-spacing: 0.3px;
+  }
+  .field input, .field select{
+    width: 100%;
+    background: var(--bg-elevated);
+    border: 1px solid var(--border);
+    color: var(--text);
+    padding: 11px 12px;
+    border-radius: 4px;
+    font-size: 14.5px;
+    font-family: 'Work Sans', sans-serif;
+  }
+  .field input:focus, .field select:focus{
+    outline: none;
+    border-color: var(--brass);
+  }
+  .row3{ display:grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; }
+  .row2{ display:grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+  @media (max-width: 480px){
+    .row3{ grid-template-columns: 1fr 1fr; }
+    .row3 > :nth-child(3){ grid-column: 1 / -1; }
+  }
+  .submit-row{ margin-top: 26px; text-align:center; }
+  .msg{
+    text-align:center;
+    padding: 14px;
+    border-radius: 4px;
+    margin-top: 18px;
+    font-size: 14px;
+  }
+  .msg.ok{ background: rgba(201,161,90,0.12); border: 1px solid var(--brass-dark); color: var(--brass-bright); }
+  .msg.err{ background: rgba(179,84,63,0.12); border: 1px solid var(--danger); color: var(--danger-bright); }
+
+  /* ---------- Footer ---------- */
+  footer{
+    padding: 40px 24px 60px;
+    text-align:center;
+    color: var(--text-muted);
+    font-size: 13.5px;
+  }
+  footer .hours{ margin-bottom: 18px; }
+  footer .hours div{ margin: 3px 0; }
+  .admin-link{
+    color: var(--text-muted);
+    text-decoration: none;
+    border-bottom: 1px dotted var(--border);
+    font-size: 12.5px;
+    cursor: pointer;
+  }
+  .admin-link:hover{ color: var(--brass); }
+
+  /* ---------- Contact / map ---------- */
+  .contact-buttons{
+    display:flex;
+    justify-content:center;
+    gap: 12px;
+    flex-wrap: wrap;
+    margin-bottom: 30px;
+  }
+  .contact-btn{
+    display:inline-flex;
+    align-items:center;
+    gap: 8px;
+    padding: 11px 20px;
+    border-radius: 4px;
+    text-decoration:none;
+    font-family:'Work Sans',sans-serif;
+    font-weight: 600;
+    font-size: 13.5px;
+    letter-spacing: 0.2px;
+    border: 1px solid var(--border);
+    transition: transform .15s ease, border-color .15s ease;
+  }
+  .contact-btn:hover{ transform: translateY(-1px); }
+  .contact-btn.whatsapp{ color: #6fcf7a; border-color: #2f4a34; }
+  .contact-btn.whatsapp:hover{ border-color: #6fcf7a; }
+  .contact-btn.instagram{ color: var(--brass-bright); border-color: var(--border); }
+  .contact-btn.instagram:hover{ border-color: var(--brass); }
+  .address-line{
+    margin-bottom: 20px;
+    color: var(--text-muted);
+    font-size: 13.5px;
+  }
+  .map-frame{
+    width: 100%;
+    max-width: 560px;
+    height: 240px;
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    margin: 0 auto 28px;
+    filter: grayscale(0.35) contrast(1.05) brightness(0.9);
+  }
+
+  /* ---------- Admin ---------- */
+  .admin-wrap{ max-width: 640px; margin: 0 auto; padding: 60px 24px; }
+  .admin-header{ display:flex; justify-content: space-between; align-items:center; margin-bottom: 28px; }
+  .admin-header h2{ font-size: 22px; margin:0; }
+  .link-btn{
+    background:none; border:none; color: var(--text-muted);
+    font-family:'Work Sans',sans-serif; font-size: 13px; cursor:pointer;
+    border-bottom: 1px dotted var(--border);
+  }
+  .link-btn:hover{ color: var(--brass); }
+
+  .appt-item{
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 16px 18px;
+    margin-bottom: 12px;
+    display:flex;
+    justify-content: space-between;
+    align-items:center;
+    gap: 14px;
+  }
+  .appt-date{
+    font-family:'Fraunces', serif;
+    color: var(--brass-bright);
+    font-size: 15px;
+    min-width: 128px;
+  }
+  .appt-details{ flex:1; }
+  .appt-details .name{ font-weight:600; font-size: 14.5px; }
+  .appt-details .meta{ color: var(--text-muted); font-size: 13px; margin-top:2px; }
+  .del-btn{
+    background: none;
+    border: 1px solid var(--border);
+    color: var(--danger-bright);
+    border-radius: 4px;
+    padding: 7px 12px;
+    font-size: 12.5px;
+    cursor: pointer;
+    font-family:'Work Sans',sans-serif;
+    white-space: nowrap;
+  }
+  .del-btn:hover{ background: rgba(179,84,63,0.14); border-color: var(--danger); }
+  .empty-state{
+    text-align:center;
+    color: var(--text-muted);
+    padding: 40px 20px;
+    border: 1px dashed var(--border);
+    border-radius: 6px;
+    font-size: 14px;
+  }
+  .day-divider{
+    color: var(--brass);
+    font-size: 12.5px;
+    letter-spacing: 1.5px;
+    margin: 26px 0 10px;
+    padding-bottom: 6px;
+    border-bottom: 1px solid var(--border-soft);
+  }
+  .day-divider:first-child{ margin-top: 0; }
+  .loading{ text-align:center; color: var(--text-muted); padding: 40px; font-size: 14px; }
+</style>
+</head>
+<body>
+
+<div id="app"></div>
+
+<script>
+(function(){
+
+  const SERVICES = [
+    { id: 'sac',       name: 'Saç Kesimi',            price: '150₺' },
+    { id: 'sakal',     name: 'Sakal Tıraşı',          price: '100₺' },
+    { id: 'sac_sakal', name: 'Saç + Sakal',           price: '220₺' },
+    { id: 'cocuk',     name: 'Çocuk Tıraşı',          price: '120₺' },
+    { id: 'damat',     name: 'Damat Tıraşı',          price: '350₺' },
+    { id: 'cilt',      name: 'Yüz / Cilt Bakımı',     price: '150₺' },
+    { id: 'fon',       name: 'Fön & Şekillendirme',   price: '80₺'  },
+    { id: 'boya',      name: 'Saç Boyama',            price: '250₺' },
+  ];
+
+  const MONTHS = ['Ocak','Şubat','Mart','Nisan','Mayıs','Haziran','Temmuz','Ağustos','Eylül','Ekim','Kasım','Aralık'];
+  const ADMIN_PASSWORD = '175886963';
+
+  const SHOP_NAME = "Gentlemen's Barber";
+  const ADDRESS = "Yavuz Selim, Antalya Cd. No:8c, 34000 Sultanbeyli/İstanbul";
+  const MAPS_LINK = "https://maps.google.com/maps/place//data=!4m2!3m1!1s0x14cad13dac62c0dd:0xd207affa754a9b48?entry=s&sa=X&ved=2ahUKEwjR5ZP-2ueWAxVn_7sIHUibJiUQ4kB6BAgEEAA&hl=tr";
+  const MAP_LAT = 40.9523306;
+  const MAP_LNG = 29.2806539;
+  const WHATSAPP_NUMBER = "905333207834";
+  const INSTAGRAM_URL = "https://www.instagram.com/gentlemensbarbershop34";
+  const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxdMhM2G2qx--yyHykC7KRRgCNlCRdsBWHw-MgR7APK-SiZIboEE7PPOdu8YWiXyMk/exec";
+
+  function timeSlots(){
+    const slots = [];
+    for(let h=9; h<21; h++){
+      const start = String(h).padStart(2,'0') + ':00';
+      const end = String(h+1).padStart(2,'0') + ':00';
+      slots.push(start + ' - ' + end);
+    }
+    return slots;
+  }
+  const TIME_SLOTS = timeSlots();
+
+  let existingAppointments = [];
+
+  function daysInMonth(month, year){
+    return new Date(year, month, 0).getDate();
+  }
+
+  function poleSVG(){
+    return `<svg width="40" height="72" viewBox="0 0 40 72" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <rect x="16" y="4" width="8" height="6" rx="1" fill="#c9a15a"/>
+      <rect x="10" y="10" width="20" height="50" rx="10" fill="#1e1811" stroke="#8f6f34" stroke-width="1.5"/>
+      <path d="M10 14 L30 24 M10 22 L30 32 M10 30 L30 40 M10 38 L30 48 M10 46 L30 56" stroke="#c9a15a" stroke-width="3" stroke-linecap="round"/>
+      <path d="M10 18 L30 28 M10 26 L30 36 M10 34 L30 44 M10 42 L30 52 M10 50 L30 60" stroke="#e0bd7d" stroke-width="3" stroke-linecap="round" opacity="0.55"/>
+      <rect x="14" y="60" width="12" height="8" rx="1" fill="#c9a15a"/>
+    </svg>`;
+  }
+
+  function whatsappIconSVG(){
+    return `<svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor" style="vertical-align:-2px"><path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.75.46 3.45 1.33 4.95L2.05 22l5.25-1.38a9.9 9.9 0 0 0 4.74 1.21h.01c5.46 0 9.9-4.45 9.9-9.91C21.96 6.45 17.5 2 12.04 2Zm5.8 14.16c-.24.68-1.4 1.3-1.93 1.38-.5.08-1.13.11-1.82-.11-.42-.13-.96-.31-1.65-.6-2.9-1.25-4.8-4.16-4.94-4.35-.14-.19-1.18-1.57-1.18-3 0-1.42.75-2.12 1.02-2.41.27-.29.58-.36.78-.36.19 0 .39 0 .56.01.18.01.42-.07.66.5.24.58.83 2 .9 2.14.07.14.12.31.02.5-.1.19-.15.31-.3.48-.15.17-.31.38-.44.51-.15.14-.3.3-.13.59.17.29.76 1.25 1.63 2.02 1.12 1 2.06 1.31 2.35 1.46.29.15.46.13.63-.05.17-.18.71-.83.9-1.11.19-.29.38-.24.63-.14.26.1 1.65.78 1.93.92.29.14.48.22.55.34.07.12.07.71-.17 1.39Z"/></svg>`;
+  }
+  function instagramIconSVG(){
+    return `<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" style="vertical-align:-2px"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.2" cy="6.8" r="1"/></svg>`;
+  }
+  function pinIconSVG(){
+    return `<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" style="vertical-align:-2px"><path d="M12 21s7-6.5 7-11.5A7 7 0 0 0 5 9.5C5 14.5 12 21 12 21Z"/><circle cx="12" cy="9.5" r="2.3"/></svg>`;
+  }
+  function ornamentIconSVG(){
+    return `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.3"><path d="M12 2 L14 10 L22 12 L14 14 L12 22 L10 14 L2 12 L10 10 Z"/></svg>`;
+  }
+
+  function scissorSVG(){
+    return `<svg width="22" height="22" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <circle cx="6" cy="6" r="3" stroke="#c9a15a" stroke-width="1.6"/>
+      <circle cx="6" cy="18" r="3" stroke="#c9a15a" stroke-width="1.6"/>
+      <path d="M8.5 8L20 19M8.5 16L20 5" stroke="#c9a15a" stroke-width="1.6" stroke-linecap="round"/>
+    </svg>`;
+  }
+
+  const app = document.getElementById('app');
+  let view = 'site'; // 'site' | 'admin-login' | 'admin-panel'
+  let adminAuthed = false;
+
+  function render(){
+    if(view === 'site') renderSite();
+    else if(view === 'admin-login') renderAdminLogin();
+    else if(view === 'admin-panel') renderAdminPanel();
+  }
+
+  function renderSite(){
+    const serviceOptions = SERVICES.map(s => `<option value="${s.id}">${s.name} — ${s.price}</option>`).join('');
+    const currentYear = new Date().getFullYear();
+    const yearOptions = [currentYear, currentYear+1].map(y => `<option value="${y}">${y}</option>`).join('');
+    const monthOptions = MONTHS.map((m,i)=>`<option value="${i+1}">${m}</option>`).join('');
+    const timeOptions = TIME_SLOTS.map(t => `<option value="${t}">${t}</option>`).join('');
+
+    app.innerHTML = `
+      <header>
+        <div class="welcome-overline">HOŞ GELDİNİZ</div>
+        <div class="pole">${poleSVG()}</div>
+        <h1 class="shop-name">${SHOP_NAME}</h1>
+        <div class="tagline">GELENEKSEL DOKUNUŞ · MODERN STİL</div>
+      </header>
+
+      <div class="hero">
+        <div class="wrap">
+          <div class="hero-welcome">Sizi ağırlamaktan mutluluk duyarız</div>
+          <h1>Zarafetin ve <em>ustalığın</em><br>buluştuğu adres</h1>
+          <p>${SHOP_NAME}'da her tıraş özenle, deneyimli ellerde şekillenir. Randevunuzu birkaç adımda oluşturun, gerisini bize bırakın.</p>
+          <button class="btn-primary" onclick="document.getElementById('booking-section').scrollIntoView({behavior:'smooth'})">Randevu Al</button>
+          <div class="ornament">${ornamentIconSVG()}</div>
+        </div>
+      </div>
+
+      <section class="block reveal">
+        <div class="wrap">
+          <div class="block-label">HAKKIMIZDA</div>
+          <h2>Hikayemiz</h2>
+          <div class="about-grid">
+            <img class="about-photo" src="https://images.unsplash.com/photo-1611313151697-d626e818dddf?auto=format&fit=crop&w=900&q=70" alt="${SHOP_NAME} iç mekan">
+            <div class="about-text">
+              <p class="lead">"Bir tıraş, sadece görünüşü değil, günü de değiştirir."</p>
+              <p>${SHOP_NAME}'da amacımız yalnızca saç ve sakal kesmek değil; her müşterimize kendini değerli hissettiği, huzurla vakit geçirebileceği bir mekan sunmak. Geleneksel berberlik ustalığını modern tekniklerle birleştiriyor, her detaya özen gösteriyoruz.</p>
+              <p>Deneyimli ekibimiz, güler yüzümüz ve titizliğimizle sizi ağırlamaktan mutluluk duyarız.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="block reveal">
+        <div class="wrap">
+          <div class="block-label">HİZMETLERİMİZ</div>
+          <h2>Fiyat Listesi</h2>
+          <div class="service-list">
+            ${SERVICES.map(s => `
+              <div class="service-row">
+                <span class="service-name">${s.name}</span>
+                <span class="service-dots"></span>
+                <span class="service-price">${s.price}</span>
+              </div>
+            `).join('')}
+          </div>
+        </div>
+      </section>
+
+      <section class="block reveal" id="booking-section">
+        <div class="wrap">
+          <div class="block-label">RANDEVU FORMU</div>
+          <h2>Bilgilerinizi Girin</h2>
+          <div class="card">
+            <form id="booking-form">
+              <div class="field">
+                <label>Ad Soyad</label>
+                <input type="text" id="f-name" required placeholder="Adınız Soyadınız">
+              </div>
+              <div class="field">
+                <label>Telefon</label>
+                <input type="tel" id="f-phone" required placeholder="05xx xxx xx xx">
+              </div>
+              <div class="field">
+                <label>Hizmet</label>
+                <select id="f-service" required>${serviceOptions}</select>
+              </div>
+              <div class="field">
+                <label>Tarih</label>
+                <div class="row3">
+                  <select id="f-day" required></select>
+                  <select id="f-month" required>${monthOptions}</select>
+                  <select id="f-year" required>${yearOptions}</select>
+                </div>
+              </div>
+              <div class="field">
+                <label>Saat</label>
+                <select id="f-time" required>${timeOptions}</select>
+              </div>
+              <div class="submit-row">
+                <button type="submit" class="btn-primary">Randevuyu Onayla</button>
+              </div>
+              <div id="form-msg"></div>
+            </form>
+          </div>
+        </div>
+      </section>
+
+      <footer>
+        <div class="hours">
+          <div><strong style="color:var(--text)">Çalışma Saatleri</strong></div>
+          <div>Her gün 09:00 – 21:00</div>
+        </div>
+
+        <div class="address-line">${ADDRESS}</div>
+
+        <iframe class="map-frame" loading="lazy"
+          src="https://www.google.com/maps?q=${MAP_LAT},${MAP_LNG}&z=16&output=embed">
+        </iframe>
+
+        <div class="contact-buttons">
+          <a class="contact-btn whatsapp" href="https://wa.me/${WHATSAPP_NUMBER}?text=Merhaba%2C%20randevu%20almak%20istiyorum." target="_blank" rel="noopener">
+            ${whatsappIconSVG()} WhatsApp'tan Yaz
+          </a>
+          <a class="contact-btn instagram" href="${INSTAGRAM_URL}" target="_blank" rel="noopener">
+            ${instagramIconSVG()} Instagram
+          </a>
+          <a class="contact-btn instagram" href="${MAPS_LINK}" target="_blank" rel="noopener">
+            ${pinIconSVG()} Haritada Gör
+          </a>
+        </div>
+
+        <a class="admin-link" onclick="window.__goAdmin()">Admin Girişi</a>
+      </footer>
+    `;
+
+    populateDays();
+    fetchAppointmentsForSlots();
+    document.getElementById('f-day').addEventListener('change', updateTimeSlots);
+    document.getElementById('f-month').addEventListener('change', () => { populateDays(); fetchAppointmentsForSlots(); });
+    document.getElementById('f-year').addEventListener('change', () => { populateDays(); fetchAppointmentsForSlots(); });
+    document.getElementById('booking-form').addEventListener('submit', handleBookingSubmit);
+    setupScrollReveal();
+  }
+
+  function setupScrollReveal(){
+    const items = document.querySelectorAll('.reveal');
+    if(!('IntersectionObserver' in window)){
+      items.forEach(el => el.classList.add('in-view'));
+      return;
+    }
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if(entry.isIntersecting){
+          entry.target.classList.add('in-view');
+          observer.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.15 });
+    items.forEach(el => observer.observe(el));
+  }
+
+  function populateDays(){
+    const monthSel = document.getElementById('f-month');
+    const yearSel = document.getElementById('f-year');
+    const daySel = document.getElementById('f-day');
+    if(!monthSel || !yearSel || !daySel) return;
+
+    const now = new Date();
+    const todayYear = now.getFullYear();
+    const todayMonth = now.getMonth() + 1;
+    const todayDay = now.getDate();
+
+    const month = parseInt(monthSel.value || String(todayMonth), 10);
+    const year = parseInt(yearSel.value || String(todayYear), 10);
+    const count = daysInMonth(month, year);
+    const oldValue = parseInt(daySel.value || '0', 10);
+
+    const days = [];
+    for(let d = 1; d <= count; d++){
+      const isPastDay =
+        year < todayYear ||
+        (year === todayYear && month < todayMonth) ||
+        (year === todayYear && month === todayMonth && d < todayDay);
+
+      if(!isPastDay){
+        days.push(`<option value="${d}">${d}</option>`);
+      }
+    }
+
+    daySel.innerHTML = days.join('');
+
+    if(oldValue && Array.from(daySel.options).some(o => Number(o.value) === oldValue)){
+      daySel.value = String(oldValue);
+    }else if(daySel.options.length){
+      daySel.selectedIndex = 0;
+    }
+
+    updateTimeSlots();
+  }
+
+  function normalizeTime(time){
+    if(!time) return '';
+    let value = String(time).trim();
+    if(value.includes(' - ')) value = value.split(' - ')[0].trim();
+    if(/^\d{1,2}:\d{2}:\d{2}$/.test(value)) value = value.slice(0,5);
+    const match = value.match(/^(\d{1,2}):(\d{2})$/);
+    if(!match) return value;
+    return String(parseInt(match[1],10)).padStart(2,'0') + ':' + match[2];
+  }
+
+  async function fetchAppointmentsForSlots(){
+    try{
+      const response = await fetch(SCRIPT_URL + '?t=' + Date.now(), { method: 'GET', cache: 'no-store' });
+      const result = await response.json();
+      existingAppointments = Array.isArray(result && result.appointments) ? result.appointments : [];
+    }catch(err){
+      console.error('Randevular çekilirken hata:', err);
+      existingAppointments = [];
+    }
+    updateTimeSlots();
+  }
+
+  function updateTimeSlots(){
+    const daySel = document.getElementById('f-day');
+    const monthSel = document.getElementById('f-month');
+    const yearSel = document.getElementById('f-year');
+    const timeSel = document.getElementById('f-time');
+    if(!daySel || !monthSel || !yearSel || !timeSel) return;
+    if(!daySel.value) return;
+
+    const day = String(daySel.value).padStart(2,'0');
+    const month = String(monthSel.value).padStart(2,'0');
+    const year = String(yearSel.value);
+    const selectedDateStr = `${year}-${month}-${day}`;
+
+    const bookedTimes = existingAppointments
+      .filter(a => String(a.date || '').slice(0,10) === selectedDateStr)
+      .map(a => normalizeTime(a.time))
+      .filter(Boolean);
+
+    const html = TIME_SLOTS.map(slot => {
+      const slotTime = normalizeTime(slot);
+      const [hour, minute] = slotTime.split(':').map(Number);
+      const slotDate = new Date(Number(year), Number(month)-1, Number(day), hour, minute, 0, 0);
+
+      const isPast = slotDate.getTime() < Date.now();
+      const isBooked = bookedTimes.includes(slotTime);
+
+      if(isBooked){
+        return `<option value="${slot}" disabled style="color:#d4715c;">${slot} (DOLU)</option>`;
+      }
+      if(isPast){
+        return `<option value="${slot}" disabled style="color:#777;">${slot} (GEÇTİ)</option>`;
+      }
+      return `<option value="${slot}">${slot}</option>`;
+    }).join('');
+
+    timeSel.innerHTML = html;
+
+    const firstAvailable = Array.from(timeSel.options).find(option => !option.disabled);
+    if(firstAvailable) timeSel.value = firstAvailable.value;
+  }
+
+  function isAppointmentAlreadyBooked(dateStr, time){
+    const wanted = normalizeTime(time);
+    return existingAppointments.some(a => {
+      const appointmentDate = String(a.date || '').slice(0,10);
+      return appointmentDate === dateStr && normalizeTime(a.time) === wanted;
+    });
+  }
+
+  async function handleBookingSubmit(e){
+    e.preventDefault();
+    const msgBox = document.getElementById('form-msg');
+    msgBox.innerHTML = '';
+
+    const name = document.getElementById('f-name').value.trim();
+    const phone = document.getElementById('f-phone').value.trim();
+    const serviceId = document.getElementById('f-service').value;
+    const day = parseInt(document.getElementById('f-day').value, 10);
+    const month = parseInt(document.getElementById('f-month').value, 10);
+    const year = parseInt(document.getElementById('f-year').value, 10);
+    const time = document.getElementById('f-time').value;
+
+    if(!name || !phone){
+      msgBox.innerHTML = '<div class="msg err">Lütfen ad soyad ve telefon bilgisi girin.</div>';
+      return;
+    }
+
+    if(!time){
+      msgBox.innerHTML = '<div class="msg err">Lütfen boş bir saat seçin.</div>';
+      return;
+    }
+
+    const service = SERVICES.find(s => s.id === serviceId);
+    const dateStr = `${year}-${String(month).padStart(2,'0')}-${String(day).padStart(2,'0')}`;
+    const startTime = normalizeTime(time);
+    const chosen = new Date(`${dateStr}T${startTime}:00`);
+
+    if(chosen.getTime() < Date.now()){
+      msgBox.innerHTML = '<div class="msg err">Geçmiş bir tarih/saat için randevu alınamaz.</div>';
+      return;
+    }
+
+    if(isAppointmentAlreadyBooked(dateStr, startTime)){
+      updateTimeSlots();
+      msgBox.innerHTML = '<div class="msg err">Bu tarih ve saat zaten dolu. Lütfen başka bir saat seçin.</div>';
+      return;
+    }
+
+    const submitBtn = e.target.querySelector('button[type="submit"]');
+    submitBtn.disabled = true;
+    submitBtn.textContent = 'Kontrol Ediliyor...';
+
+    try{
+      const response = await fetch(SCRIPT_URL + '?t=' + Date.now(), { method: 'GET', cache: 'no-store' });
+      const result = await response.json();
+      existingAppointments = Array.isArray(result && result.appointments) ? result.appointments : [];
+
+      if(isAppointmentAlreadyBooked(dateStr, startTime)){
+        updateTimeSlots();
+        msgBox.innerHTML = '<div class="msg err">Bu tarih ve saat az önce başkası tarafından alındı. Lütfen başka bir saat seçin.</div>';
+        submitBtn.disabled = false;
+        submitBtn.textContent = 'Randevuyu Onayla';
+        return;
+      }
+    }catch(err){
+      console.error('Randevu kontrolü başarısız:', err);
+      msgBox.innerHTML = '<div class="msg err">Randevu kontrolü yapılamadı. Lütfen tekrar deneyin.</div>';
+      submitBtn.disabled = false;
+      submitBtn.textContent = 'Randevuyu Onayla';
+      return;
+    }
+
+    const appointment = {
+      id: 'appt_' + Date.now() + '_' + Math.random().toString(36).slice(2,8),
+      name, phone,
+      serviceId, serviceName: service ? service.name : serviceId,
+      date: dateStr,
+      time: startTime,
+      createdAt: new Date().toISOString()
+    };
+
+    submitBtn.textContent = 'Kaydediliyor...';
+
+    try{
+      const response = await fetch(SCRIPT_URL, {
+        method: 'POST',
+        body: JSON.stringify({ action: 'add', appointment: appointment })
+      });
+      const result = await response.json();
+      if(!result || !result.success){
+        throw new Error('Kayıt başarısız');
+      }
+
+      existingAppointments.push(appointment);
+      msgBox.innerHTML = `<div class="msg ok">Randevunuz alındı! ${day} ${MONTHS[month-1]} ${year}, saat ${startTime} — sizi bekliyoruz.</div>`;
+      e.target.reset();
+      populateDays();
+      await fetchAppointmentsForSlots();
+    }catch(err){
+      console.error('Booking error:', err);
+      msgBox.innerHTML = '<div class="msg err">Bir sorun oluştu, lütfen tekrar deneyin.</div>';
+    }finally{
+      submitBtn.disabled = false;
+      submitBtn.textContent = 'Randevuyu Onayla';
+    }
+  }
+
+  function renderAdminLogin(){
+    app.innerHTML = `
+      <div class="admin-wrap">
+        <div class="admin-header">
+          <h2>Admin Girişi</h2>
+          <button class="link-btn" onclick="window.__goSite()">← Siteye dön</button>
+        </div>
+        <div class="card">
+          <form id="admin-login-form">
+            <div class="field">
+              <label>Şifre</label>
+              <input type="password" id="admin-pass" required placeholder="••••••••">
+            </div>
+            <div class="submit-row">
+              <button type="submit" class="btn-primary">Giriş Yap</button>
+            </div>
+            <div id="admin-login-msg"></div>
+          </form>
+        </div>
+      </div>
+    `;
+    document.getElementById('admin-login-form').addEventListener('submit', function(e){
+      e.preventDefault();
+      const val = document.getElementById('admin-pass').value;
+      if(val === ADMIN_PASSWORD){
+        adminAuthed = true;
+        view = 'admin-panel';
+        render();
+      }else{
+        document.getElementById('admin-login-msg').innerHTML = '<div class="msg err">Şifre hatalı.</div>';
+      }
+    });
+  }
+
+  async function renderAdminPanel(){
+    app.innerHTML = `
+      <div class="admin-wrap">
+        <div class="admin-header">
+          <h2>Randevular</h2>
+          <div style="display:flex; gap:16px; align-items:center;">
+            <button class="link-btn" onclick="window.__refreshAdmin()">Yenile</button>
+            <button class="link-btn" onclick="window.__logoutAdmin()">Çıkış</button>
+          </div>
+        </div>
+        <div id="admin-list"><div class="loading">Randevular yükleniyor...</div></div>
+      </div>
+    `;
+    await loadAppointments();
+  }
+
+  async function loadAppointments(){
+    const listBox = document.getElementById('admin-list');
+    try{
+      const response = await fetch(SCRIPT_URL + '?t=' + Date.now(), { method: 'GET' });
+      const result = await response.json();
+      let list = (result && result.appointments) ? result.appointments : [];
+      list.sort((a,b) => (a.date+a.time).localeCompare(b.date+b.time));
+
+      if(list.length === 0){
+        listBox.innerHTML = '<div class="empty-state">Henüz randevu yok.</div>';
+        return;
+      }
+
+      let html = '';
+      let lastDate = null;
+      for(const appt of list){
+        if(appt.date !== lastDate){
+          const d = new Date(appt.date + 'T00:00:00');
+          const label = `${d.getDate()} ${MONTHS[d.getMonth()]} ${d.getFullYear()}`;
+          html += `<div class="day-divider">${label.toUpperCase()}</div>`;
+          lastDate = appt.date;
+        }
+        html += `
+          <div class="appt-item">
+            <div class="appt-date">${appt.time}</div>
+            <div class="appt-details">
+              <div class="name">${escapeHtml(appt.name)}</div>
+              <div class="meta">${escapeHtml(appt.serviceName)} · ${escapeHtml(appt.phone)}</div>
+            </div>
+            <button class="del-btn" onclick="window.__deleteAppt('${appt.id}')">Sil</button>
+          </div>
+        `;
+      }
+      listBox.innerHTML = html;
+    }catch(err){
+      console.error('Load error:', err);
+      listBox.innerHTML = '<div class="empty-state">Randevular yüklenirken bir sorun oluştu.</div>';
+    }
+  }
+
+  function escapeHtml(str){
+    const div = document.createElement('div');
+    div.textContent = str == null ? '' : str;
+    return div.innerHTML;
+  }
+
+  window.__goAdmin = function(){
+    view = adminAuthed ? 'admin-panel' : 'admin-login';
+    render();
+  };
+  window.__goSite = function(){
+    view = 'site';
+    render();
+  };
+  window.__logoutAdmin = function(){
+    adminAuthed = false;
+    view = 'site';
+    render();
+  };
+  window.__refreshAdmin = function(){
+    renderAdminPanel();
+  };
+  window.__deleteAppt = async function(id){
+    try{
+      await fetch(SCRIPT_URL, {
+        method: 'POST',
+        body: JSON.stringify({ action: 'delete', id: id })
+      });
+      await loadAppointments();
+    }catch(err){
+      console.error('Delete error:', err);
+    }
+  };
+
+  render();
+})();
+</script>
+</body>
+</html>
